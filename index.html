@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>WoW Crafting Table</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <style>
+    body {
+      font-family: 'IM Fell English', serif;
+      background: url('https://images2.minutemediacdn.com/image/upload/c_crop,w_3840,h_2160,x_0,y_0/c_fill,w_720,ar_16:9,f_auto,q_auto,g_auto/images/voltaxMediaLibrary/mmsport/esports_illustrated/01jec999y62g4467fykv.jpg') center center / cover no-repeat fixed;
+      color: #3e2b1c;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #f9b233;
+      margin-bottom: 30px;
+      font-size: 32px;
+      text-shadow: 1px 1px 0 #fff8dc;
+    }
+
+    #filter-container {
+      background: rgba(0,0,0,0.2);
+      border: 2px solid #a98250;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    #filter-left, #filter-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    select, input[type="search"] {
+      padding: 6px 10px;
+      font-size: 16px;
+      border: 1px solid #a98250;
+      background: #fff8dc;
+      color: #3e2b1c;
+      border-radius: 6px;
+    }
+
+    #craftTable_wrapper {
+      background: rgba(255, 248, 220, 0.95);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      overflow-x: auto;
+    }
+
+    table.dataTable th {
+      background-color: #d6b87d;
+      color: #3e2b1c;
+      padding: 12px;
+      text-align: left;
+      border-bottom: 2px solid #a98250;
+    }
+
+    table.dataTable td {
+      padding: 10px;
+      border-bottom: 1px solid #cbb27d;
+    }
+
+    table.dataTable tr:nth-child(even) {
+      background-color: #f7f1df;
+    }
+
+    table.dataTable tr:hover {
+      background-color: #e6dbb6;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      table {
+        font-size: 12px;
+      }
+      #filter-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      #filter-left, #filter-right {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Psycraft</h1>
+
+  <div id="filter-container">
+    <div id="filter-left">
+      <label for="professionFilter">Profession:</label>
+      <select id="professionFilter">
+        <option value="">All</option>
+      </select>
+    </div>
+    <div id="filter-right">
+      <label for="globalSearch">Search:</label>
+      <input type="search" id="globalSearch" placeholder="Search items...">
+    </div>
+  </div>
+
+  <table id="craftTable" class="display"></table>
+
+  <script>
+    const sheetCSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT8pMucB93x3Tc3qb1SDJKdg4-LYbd8qGnDKLCtdRRZgY_BkJ3w0AGM8-qOF0KQv5jZAG1uqv2E66ce/pub?gid=1592321778&single=true&output=csv';
+
+    const professionIcons = {
+      'Blacksmithing': 'https://wow.zamimg.com/images/wow/icons/large/trade_blacksmithing.jpg',
+      'Leatherworking': 'https://wow.zamimg.com/images/wow/icons/large/trade_leatherworking.jpg',
+      'Tailoring': 'https://wow.zamimg.com/images/wow/icons/large/trade_tailoring.jpg',
+      'Engineering': 'https://wow.zamimg.com/images/wow/icons/large/trade_engineering.jpg',
+      'Alchemy': 'https://wow.zamimg.com/images/wow/icons/large/trade_alchemy.jpg',
+      'Jewelcrafting': 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_01.jpg',
+      'Enchanting': 'https://wow.zamimg.com/images/wow/icons/large/trade_engraving.jpg',
+      'Inscription': 'https://wow.zamimg.com/images/wow/icons/large/trade_inscription.jpg'
+    };
+
+    const gearIcons = {
+      'Helm': 'https://wow.zamimg.com/images/wow/icons/large/inv_helmet_06.jpg',
+      'Shoulders': 'https://wow.zamimg.com/images/wow/icons/large/inv_shoulder_02.jpg',
+      'Back': 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_cape_11.jpg',
+      'Chest': 'https://wow.zamimg.com/images/wow/icons/large/inv_chest_cloth_17.jpg',
+      'Wrists': 'https://wow.zamimg.com/images/wow/icons/large/inv_bracer_17.jpg',
+      'Hands': 'https://wow.zamimg.com/images/wow/icons/large/inv_gauntlets_17.jpg',
+      'Waist': 'https://wow.zamimg.com/images/wow/icons/large/inv_belt_15.jpg',
+      'Legs': 'https://wow.zamimg.com/images/wow/icons/large/inv_pants_cloth_21.jpg',
+      'Feet': 'https://wow.zamimg.com/images/wow/icons/large/inv_boots_05.jpg'
+    };
+
+    Papa.parse(sheetCSV, {
+      download: true,
+      header: true,
+      complete: function(results) {
+        const data = results.data;
+        const professions = [...new Set(data.map(row => row.Profession).filter(p => p))].sort();
+
+        professions.forEach(p => {
+          $('#professionFilter').append(`<option value="${p}">${p}</option>`);
+        });
+
+        const table = $('#craftTable').DataTable({
+          data: data,
+          columns: [
+            {
+              title: 'Profession',
+              data: 'Profession',
+              render: function(data) {
+                const icon = professionIcons[data] || '';
+                return icon ? `<img class="icon" src="${icon}" alt="">${data}` : data;
+              }
+            },
+            {
+              title: 'Gear Slot',
+              data: 'Gear Slot',
+              render: function(data) {
+                const icon = gearIcons[data] || '';
+                return icon ? `<img class="icon" src="${icon}" alt="">${data}` : data;
+              }
+            },
+            { title: 'Item/Enchant Name', data: 'Item/Enchant Name' },
+            { title: 'Crafter(s)', data: 'Crafter(s)' }
+          ],
+          pageLength: 25,
+          dom: 't' // hide built-in filter input
+        });
+
+        $('#professionFilter').on('change', function() {
+          const val = this.value;
+          table.column(0).search(val).draw();
+        });
+
+        $('#globalSearch').on('keyup', function() {
+          table.search(this.value).draw();
+        });
+      }
+    });
+  </script>
+</body>
+</html>
