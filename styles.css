@@ -5,7 +5,7 @@
       margin: 0;
       background-color: #a3bba3;
       overflow-x: hidden;
-      
+      user-select:none;
     }
 
     h1 {
@@ -18,6 +18,108 @@
     
     table#craftTable {
     width: auto !important;
+}
+    .wowhead-link {
+          text-decoration: none;
+          color:black;
+        }
+        .icon {
+          width: 20px;
+          height: 20px;
+          vertical-align: middle;
+          margin-right: 6px;
+        }
+        .favourite-star {
+          cursor: pointer;
+          font-size: 18px;
+          color: #ccc;
+        }
+        .favourite-star.favourited {
+          color: gold;
+        }
+        #favouriteToggle {
+          margin: 0 10px;
+          display: inline-block;
+          font-weight: bold;
+          cursor: pointer;
+        }
+        #clearFavourites {
+          margin-left: 12px;
+          padding: 8px;
+          cursor: pointer;
+        }
+        #toast {
+          position: fixed;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: #333;
+          color: #fff;
+          padding: 12px 20px;
+          border-radius: 8px;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.4s ease;
+          z-index: 1000;
+          font-family: sans-serif;
+        }
+        #toast.show {
+          opacity: 1;
+          pointer-events: auto;
+        }
+        .favourite-toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 3px 12px;
+      background: #fff8dc;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      transition: background 0.3s;
+    }
+
+    .favourite-toggle:hover {
+      background: #f1eddb;
+    }
+
+    .toggle-star {
+      font-size: 18px;
+      margin-right: 6px;
+      color: #ccc;
+      transition: color 0.3s;
+    }
+
+    #favouriteToggle:checked + .toggle-star {
+      color: gold;
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .clear-favs {
+      padding: 6px 10px;
+      background: #fff8dc;
+      border: 1px solid #bbb;
+      border-radius: 7px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .clear-favs:hover {
+      background: #ddd;
+    }
+    .favourite-cell {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-align:center !important;
 }
 .discord-badge {
   display: inline-flex;

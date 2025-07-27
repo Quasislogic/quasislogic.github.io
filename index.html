@@ -2,6 +2,14 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta property="og:title" content="Psy's Crafting Table">
+<meta property="og:description" content="Psy's Crafting Table.">
+<meta property="og:image" content=https://psycraft.net/download_2.jfif>
+<meta property="og:url" content="https://psycraft.net">
+<meta property="og:type" content="website">
+
+<!-- Optional: Twitter card support -->
+<meta name="twitter:card" content="summary_large_image">
   <title>WoW Crafting Table</title>
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="styles.css">
@@ -9,6 +17,8 @@
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://wow.zamimg.com/widgets/power.js"></script>
+  <script src="main.js"></script>
 </head>
 <body>
 
@@ -20,22 +30,30 @@
   <span class="discord-text">Join us on Discord</span>
 </a>
 
-
 <div class="body">
   <div id="filter-container">
-    <div id="filter-left">
-      <label for="professionFilter">Profession:</label>
-      <select id="professionFilter"><option value="">All</option></select>
+   <div id="filter-left">
+  <label for="professionFilter">Profession:</label>
+  <select id="professionFilter"><option value="">All</option></select>
 
-      <label for="gearSlotFilter">Gear Slot:</label>
-      <select id="gearSlotFilter"><option value="">All</option></select>
+  <label for="gearSlotFilter">Gear Slot:</label>
+  <select id="gearSlotFilter"><option value="">All</option></select>
 
-      <label for="itemFilter">Item/Enchant:</label>
-      <select id="itemFilter"><option value="">All</option></select>
+  <label for="itemFilter">Item/Enchant:</label>
+  <select id="itemFilter"><option value="">All</option></select>
 
-      <label for="crafterFilter">Crafter(s):</label>
-      <select id="crafterFilter"><option value="">All</option></select>
-    </div>
+  <label for="crafterFilter">Crafter(s):</label>
+  <select id="crafterFilter"><option value="">All</option></select>
+
+    <label class="favourite-toggle">
+      <input type="checkbox" id="favouriteToggle" hidden>
+      <span class="toggle-star">⭐</span>
+      <span class="toggle-label">Favourites Only</span>
+    </label>
+    <button id="clearFavourites" class="clear-favs">🗑️</button>
+  </div>
+
+
 
     <div id="filter-right">
       <label for="globalSearch">Search:</label>
@@ -43,166 +61,15 @@
     </div>
   </div>
 
+
+
+
+</div>
+
   <table id="craftTable" class="display"></table>
 
-  <script>
-    const sheetCSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT8pMucB93x3Tc3qb1SDJKdg4-LYbd8qGnDKLCtdRRZgY_BkJ3w0AGM8-qOF0KQv5jZAG1uqv2E66ce/pub?gid=1592321778&single=true&output=csv';
+  <!-- Toast element -->
+  <div id="toast">Favourites cleared</div>
 
-    const professionIcons = {
-      'Blacksmithing': 'https://wow.zamimg.com/images/wow/icons/large/trade_blacksmithing.jpg',
-      'Leatherworking': 'https://wow.zamimg.com/images/wow/icons/large/trade_leatherworking.jpg',
-      'Tailoring': 'https://wow.zamimg.com/images/wow/icons/large/trade_tailoring.jpg',
-      'Engineering': 'https://wow.zamimg.com/images/wow/icons/large/trade_engineering.jpg',
-      'Alchemy': 'https://wow.zamimg.com/images/wow/icons/large/trade_alchemy.jpg',
-      'Jewelcrafting': 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_01.jpg',
-      'Enchanting': 'https://wow.zamimg.com/images/wow/icons/large/trade_engraving.jpg',
-      'Inscription': 'https://wow.zamimg.com/images/wow/icons/large/inv_inscription_tradeskill01.jpg'
-    };
-
-    const gearIcons = {
-      'Helm': 'https://wow.zamimg.com/images/wow/icons/large/inv_helmet_06.jpg',
-      'Shoulders': 'https://wow.zamimg.com/images/wow/icons/large/inv_shoulder_02.jpg',
-      'Back': 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_cape_11.jpg',
-      'Chest': 'https://wow.zamimg.com/images/wow/icons/large/inv_chest_cloth_17.jpg',
-      'Wrists': 'https://wow.zamimg.com/images/wow/icons/large/inv_bracer_17.jpg',
-      'Hands': 'https://wow.zamimg.com/images/wow/icons/large/inv_gauntlets_17.jpg',
-      'Waist': 'https://wow.zamimg.com/images/wow/icons/large/inv_belt_15.jpg',
-      'Legs': 'https://wow.zamimg.com/images/wow/icons/large/inv_pants_cloth_21.jpg',
-      'Boots': 'https://wow.zamimg.com/images/wow/icons/large/inv_boots_05.jpg',
-      'Main Hand': 'https://wow.zamimg.com/images/wow/icons/medium/inv_sword_24.jpg',
-      'Off-hand':'https://static.wikia.nocookie.net/wowpedia/images/5/5a/Inv_offhand_blood_02.png',
-      'Ring': 'https://wow.zamimg.com/images/wow/icons/medium/inv_jewelry_ring_81.jpg',
-        "Red Gem":        "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_x4_rare_cut_red.jpg",
-  "Blue Gem":       "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_x4_rare_cut_blue.jpg",
-  "Yellow Gem":     "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_x4_rare_cut_yellow.jpg",
-  "Green Gem":      "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_x4_rare_cut_green.jpg",
-  "Purple Gem":     "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_x4_rare_cut_purple.jpg",
-  "Orange Gem":     "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_x4_rare_cut_orange.jpg",
-  "Prismatic Gem":  "https://wow.zamimg.com/images/wow/icons/medium/inv_jewelcrafting_cut-standart-gem-hybrid_color1_3.jpg",
-  "Meta Gem":       "https://wow.zamimg.com/images/wow/icons/medium/inv_misc_gem_x4_metagem_cut.jpg",
-    "Flask":          "https://wow.zamimg.com/images/wow/icons/medium/inv_flask_red.jpg",
-  "Potion/Elixir":         "https://wow.zamimg.com/images/wow/icons/large/inv_potion_107.jpg",
-  "Glyph":          "https://wow.zamimg.com/images/wow/icons/medium/inv_glyph_minorhunter.jpg",
-  "Transmutation":  "https://static.wikia.nocookie.net/wowpedia/images/7/7e/Spell_nature_abolishmagic.png"
-    };
-
-    Papa.parse(sheetCSV, {
-      download: true,
-      header: true,
-      complete: function(results) {
-        const data = results.data;
-
-        // === Filter: Profession
-        const professions = [...new Set(data.map(row => row.Profession).filter(Boolean))].sort();
-        professions.forEach(p => {
-          $('#professionFilter').append(`<option value="${p}">${p}</option>`);
-        });
-
-        // === Filter: Gear Slot with grouping
-        const allGearSlots = [...new Set(data.map(row => row["Gear Slot"]).filter(Boolean))].sort();
-const groupedGearSlots = {
-  "Armor": ['Helm', 'Shoulders', 'Chest', 'Legs', 'Hands', 'Boots', 'Wrists', 'Waist'],
-  "Weapon": ['Main Hand', 'Off-hand'],
-  "Accessories": ['Back', 'Ring'],
-  "Gems": ['Red Gem', 'Blue Gem', 'Yellow Gem', 'Purple Gem', 'Orange Gem', 'Green Gem', 'Prismatic Gem', 'Meta Gem']
-};
-
-const allGroupedSlots = Object.values(groupedGearSlots).flat();
-groupedGearSlots["Other"] = allGearSlots.filter(slot => !allGroupedSlots.includes(slot));
-
-        for (const [group, options] of Object.entries(groupedGearSlots)) {
-          const groupElem = $(`<optgroup label="${group}"></optgroup>`);
-          options.forEach(opt => {
-            groupElem.append(`<option value="${opt}">${opt}</option>`);
-          });
-          $('#gearSlotFilter').append(groupElem);
-        }
-
-        // === Filter: Item/Enchant Name
-        const itemNames = [...new Set(data.map(row => row["Item/Enchant Name"]).filter(Boolean))].sort();
-        itemNames.forEach(i => {
-          $('#itemFilter').append(`<option value="${i}">${i}</option>`);
-        });
-
-const allCrafters = data
-  .map(row => row["Crafter(s)"])
-  .filter(Boolean)
-  .flatMap(c => c.split(',').map(name => name.trim()));
-
-const uniqueCrafters = [...new Set(allCrafters)].sort();
-
-uniqueCrafters.forEach(crafter => {
-  $('#crafterFilter').append(`<option value="${crafter}">${crafter}</option>`);
-});
-
-        // === DataTable Setup
-        const table = $('#craftTable').DataTable({
-          data: data,
-          columns: [
-            {
-              title: 'Profession',
-              data: 'Profession',
-              render: function(data) {
-                const icon = professionIcons[data] || '';
-                return icon ? `<img class="icon" src="${icon}" alt="">${data}` : data;
-              }
-            },
-            {
-              title: 'Gear Slot',
-              data: 'Gear Slot',
-              render: function(data) {
-                const icon = gearIcons[data] || '';
-                return icon ? `<img class="icon" src="${icon}" alt="">${data}` : data;
-              }
-            },
-            { title: 'Item/Enchant Name', data: 'Item/Enchant Name' },
-            
-            { title: 'Crafter(s)', data: 'Crafter(s)' }
-          ],
-            columnDefs: [
-    {
-      targets: 2, // Item/Enchant Name column index
-      width: '40%' // or '20%', or whatever size works
-    },
-        {
-      targets: 1, // Item/Enchant Name column index
-      width: '20%' // or '20%', or whatever size works
-    },
-        {
-      targets: 0, // Item/Enchant Name column index
-      width: '20%' // or '20%', or whatever size works
-    },
-            {
-      targets: 0, // Item/Enchant Name column index
-      width: '20%' // or '20%', or whatever size works
-    }
-  ],
-          pageLength: 25,
-          dom: 'lftip'
-        });
-
-        // === Filter Event Bindings
-        $('#professionFilter').on('change', function() {
-          table.column(0).search(this.value).draw();
-        });
-
-        $('#gearSlotFilter').on('change', function() {
-          table.column(1).search(this.value).draw();
-        });
-
-        $('#itemFilter').on('change', function() {
-          table.column(2).search(this.value).draw();
-        });
-
-        $('#crafterFilter').on('change', function() {
-          table.column(3).search(this.value).draw();
-        });
-
-        $('#globalSearch').on('keyup', function() {
-          table.search(this.value).draw();
-        });
-      }
-    });
-  </script>
 </body>
 </html>
