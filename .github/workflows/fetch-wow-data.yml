@@ -1,33 +1,45 @@
 name: Fetch WoW Crafting Data
 
 on:
-  workflow_dispatch:  # allows manual triggering
+  workflow_dispatch:  # manual trigger
   schedule:
-    - cron: '0 6 * * *'  # every day at 6:00am UTC
+    - cron: '0 6 * * *'  # daily at 6am UTC
 
 jobs:
   fetch-wow-data:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: 📥 Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: 🧰 Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        run: npm install axios
+      - name: 📦 Create Node.js project & install axios
+        run: |
+          npm init -y
+          npm install axios
 
-      - name: Fetch WoW data
+      - name: 🧪 Debug: Log Node version and secrets status
+        run: |
+          echo "Node version: $(node -v)"
+          echo "Axios version: $(npm list axios)"
+          echo "✅ CLIENT_ID is ${CLIENT_ID:+set}"
+          echo "✅ CLIENT_SECRET is ${CLIENT_SECRET:+set}"
+        env:
+          CLIENT_ID: ${{ secrets.BLIZZARD_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.BLIZZARD_CLIENT_SECRET }}
+
+      - name: 🔄 Fetch WoW data using Blizzard API
         run: node scripts/fetch-wow-data.js
         env:
           CLIENT_ID: ${{ secrets.BLIZZARD_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.BLIZZARD_CLIENT_SECRET }}
 
-      - name: Commit and push changes
+      - name: ✅ Commit and push new data
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
