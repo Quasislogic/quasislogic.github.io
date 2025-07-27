@@ -112,7 +112,7 @@ Papa.parse(sheetCSV, {
             const name = row["Item/Enchant Name"];
             const id = row["Item ID"];
             if (!id) return name;
-            return `<a href="https://www.wowhead.com/item=${id}" data-wowhead="item=${id}" class="wowhead-link">${name}</a>`;
+            return `<a href="https://www.wowhead.com/mop-classic/item=${id}" data-wowhead="item=${id}" class="wowhead-link">${name}</a>`;
           }
         },
         {
