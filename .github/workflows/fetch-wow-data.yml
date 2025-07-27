@@ -38,8 +38,14 @@ jobs:
           CLIENT_SECRET: ${{ secrets.BLIZZARD_CLIENT_SECRET }}
 
       - name: 🚀 Commit and push new data
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add data/
-          git diff --cached --quiet && echo "🟡 No changes to commit" || (git commit -m "Update MoP Remix item data" && git push)
+          git diff --cached --quiet && echo "🟡 No changes to commit" || (
+            git commit -m "Update MoP Remix item data" && \
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:${{ github.ref }}
+          )
+
