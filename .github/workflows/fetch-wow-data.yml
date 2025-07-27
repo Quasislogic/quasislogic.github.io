@@ -1,4 +1,4 @@
-name: Fetch WoW Crafting Data
+name: Fetch MoP Remix Crafting Data
 
 on:
   workflow_dispatch:
@@ -10,20 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: 📦 Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: ⚙️ Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        run: |
-          npm init -y
-          npm install axios
+      - name: 📥 Install dependencies
+        run: npm install axios
 
-      - name: Debug environment
+      - name: 🔐 Debug environment
         run: |
           echo "Node version: $(node -v)"
           echo "Axios version: $(npm list axios)"
@@ -33,16 +31,15 @@ jobs:
           CLIENT_ID: ${{ secrets.BLIZZARD_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.BLIZZARD_CLIENT_SECRET }}
 
-      - name: Fetch WoW data
+      - name: 🧠 Run fetch-wow-data.js
         run: node scripts/fetch-wow-data.js
         env:
           CLIENT_ID: ${{ secrets.BLIZZARD_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.BLIZZARD_CLIENT_SECRET }}
 
-      - name: Commit and push new data
+      - name: 🚀 Commit and push new data
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add data/
-          git commit -m "Update WoW item data"
-          git push
+          git diff --cached --quiet && echo "🟡 No changes to commit" || (git commit -m "Update MoP Remix item data" && git push)
