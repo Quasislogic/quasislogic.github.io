@@ -15,9 +15,55 @@
       font-size: 32px;
       text-shadow: 1px 1px 0 #fff8dc;
     }
-table#craftTable {
+    
+    table#craftTable {
     width: auto !important;
 }
+.discord-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: #556f55;
+  color: white;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: max-width 0.6s ease, padding 0.6s ease, background-color 0.2s ease;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 24px;
+  z-index: 9999;
+}
+
+.discord-icon {
+  width: 24px;
+  height: 24px;
+  z-index:9999;
+ 
+}
+
+.discord-text {
+  margin-left: 10px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index:9999;
+}
+
+.discord-badge:hover {
+  max-width: 240px;
+  padding-right: 16px;
+  background-color: #4752c4;
+  z-index:9999;
+}
+
+.discord-badge:hover .discord-text {
+  opacity: 1;
+  z-index:9999;
+}
+
+
+
     #filter-container {
       background: rgba(0,0,0,0.2);
       border: 2px solid #a3bba3;
@@ -53,6 +99,7 @@ table#craftTable {
   position: relative;
   overflow: hidden;
   animation: slow-zoom-bg 20s ease-in-out forwards;
+  z-index: -1;
 }
 
 .site-header::after {
@@ -62,12 +109,14 @@ table#craftTable {
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: -1;
   background: linear-gradient(
   to bottom,
   rgba(0, 0, 0, 0) 0%,
   rgba(163, 187, 163, 0.1) 60%,
   rgba(163, 187, 163, 0.6) 80%,
   #a3bba3 100%
+  
 );
 
   pointer-events: none;
