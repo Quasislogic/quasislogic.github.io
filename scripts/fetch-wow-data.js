@@ -1,6 +1,18 @@
 const fs = require('fs');
 const axios = require('axios');
 
+const BASE_URL = 'https://us.api.blizzard.com/data/wow/mop-classic/item';
+const NAMESPACE = 'static-classic1x-us';
+const LOCALE = 'en_US';
+const OUTPUT_FILE = 'data/items.json';
+
+// ✅ Replace with real item IDs you want to test
+const items = [
+  98893, // Crafted Malevolent Gladiator’s Leather Helm (MoP Remix)
+  98928, // Crafted Malevolent Gladiator’s Plate Helm
+  98600  // Singing Crystal Helm
+];
+
 async function getToken() {
   const response = await axios.post('https://oauth.battle.net/token', null, {
     auth: {
@@ -15,10 +27,11 @@ async function getToken() {
 }
 
 async function fetchItemData(itemId, token) {
-  const response = await axios.get(`https://us.api.blizzard.com/data/wow/item/${itemId}`, {
+  const url = `${BASE_URL}/${itemId}`;
+  const response = await axios.get(url, {
     params: {
-      namespace: 'static-us',
-      locale: 'en_US',
+      namespace: NAMESPACE,
+      locale: LOCALE,
       access_token: token,
     },
   });
@@ -28,20 +41,25 @@ async function fetchItemData(itemId, token) {
 (async () => {
   try {
     const token = await getToken();
-    const items = [190320, 190321, 198330]; // add more item IDs here
-
     const results = {};
+
     for (const id of items) {
-      console.log(`Fetching item ${id}...`);
-      const data = await fetchItemData(id, token);
-      results[id] = data;
+      try {
+        console.log(`🔍 Fetching item ${id}...`);
+        const data = await fetchItemData(id, token);
+        results[id] = data;
+        console.log(`✅ Item ${id} fetched`);
+      } catch (err) {
+        const status = err.response?.status || 'UNKNOWN';
+        console.warn(`⚠️  Item ${id} failed with status ${status}`);
+      }
     }
 
     fs.mkdirSync('data', { recursive: true });
-    fs.writeFileSync('data/items.json', JSON.stringify(results, null, 2));
-    console.log('✅ WoW data saved to data/items.json');
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(results, null, 2));
+    console.log(`📦 Saved ${Object.keys(results).length} items to ${OUTPUT_FILE}`);
   } catch (err) {
-    console.error('❌ Failed to fetch data:', err);
+    console.error('❌ Top-level failure:', err.message || err);
     process.exit(1);
   }
 })();
