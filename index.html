@@ -4,123 +4,34 @@
   <meta charset="utf-8">
   <title>WoW Crafting Table</title>
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-  <style>
-    body {
-      font-family: 'IM Fell English', serif;
-      background: url('https://images2.minutemediacdn.com/image/upload/c_crop,w_3840,h_2160,x_0,y_0/c_fill,w_720,ar_16:9,f_auto,q_auto,g_auto/images/voltaxMediaLibrary/mmsport/esports_illustrated/01jec999y62g4467fykv.jpg') center center / cover no-repeat fixed;
-      color: #3e2b1c;
-      margin: 0;
-      padding: 40px 20px;
-    }
-
-    h1 {
-      text-align: center;
-      color: #f9b233;
-      margin-bottom: 30px;
-      font-size: 32px;
-      text-shadow: 1px 1px 0 #fff8dc;
-    }
-
-    #filter-container {
-      background: rgba(0,0,0,0.2);
-      border: 2px solid #a98250;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    #filter-left, #filter-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    select, input[type="search"] {
-      padding: 6px 10px;
-      font-size: 16px;
-      border: 1px solid #a98250;
-      background: #fff8dc;
-      color: #3e2b1c;
-      border-radius: 6px;
-    }
-
-    #craftTable_wrapper {
-      background: rgba(255, 248, 220, 0.95);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      overflow-x: auto;
-    }
-
-    table.dataTable th {
-      background-color: #d6b87d;
-      color: #3e2b1c;
-      padding: 12px;
-      text-align: left;
-      border-bottom: 2px solid #a98250;
-    }
-
-    table.dataTable td {
-      padding: 10px;
-      border-bottom: 1px solid #cbb27d;
-    }
-
-    table.dataTable tr:nth-child(even) {
-      background-color: #f7f1df;
-    }
-
-    table.dataTable tr:hover {
-      background-color: #e6dbb6;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .icon {
-      width: 20px;
-      height: 20px;
-      vertical-align: middle;
-      margin-right: 6px;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-      table {
-        font-size: 12px;
-      }
-      #filter-container {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      #filter-left, #filter-right {
-        justify-content: center;
-      }
-    }
-  </style>
 </head>
 <body>
-  <h1>Psycraft</h1>
 
+<header class="site-header">
+  <div class="banner-text">Psy x GGW</div>  
+</header>
+
+<div class="body">
   <div id="filter-container">
     <div id="filter-left">
       <label for="professionFilter">Profession:</label>
-      <select id="professionFilter">
-        <option value="">All</option>
-      </select>
+      <select id="professionFilter"><option value="">All</option></select>
+
+      <label for="gearSlotFilter">Gear Slot:</label>
+      <select id="gearSlotFilter"><option value="">All</option></select>
+
+      <label for="itemFilter">Item/Enchant:</label>
+      <select id="itemFilter"><option value="">All</option></select>
+
+      <label for="crafterFilter">Crafter(s):</label>
+      <select id="crafterFilter"><option value="">All</option></select>
     </div>
+
     <div id="filter-right">
       <label for="globalSearch">Search:</label>
       <input type="search" id="globalSearch" placeholder="Search items...">
@@ -140,7 +51,7 @@
       'Alchemy': 'https://wow.zamimg.com/images/wow/icons/large/trade_alchemy.jpg',
       'Jewelcrafting': 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_01.jpg',
       'Enchanting': 'https://wow.zamimg.com/images/wow/icons/large/trade_engraving.jpg',
-      'Inscription': 'https://wow.zamimg.com/images/wow/icons/large/trade_inscription.jpg'
+      'Inscription': 'https://wow.zamimg.com/images/wow/icons/large/inv_inscription_tradeskill01.jpg'
     };
 
     const gearIcons = {
@@ -152,7 +63,22 @@
       'Hands': 'https://wow.zamimg.com/images/wow/icons/large/inv_gauntlets_17.jpg',
       'Waist': 'https://wow.zamimg.com/images/wow/icons/large/inv_belt_15.jpg',
       'Legs': 'https://wow.zamimg.com/images/wow/icons/large/inv_pants_cloth_21.jpg',
-      'Feet': 'https://wow.zamimg.com/images/wow/icons/large/inv_boots_05.jpg'
+      'Boots': 'https://wow.zamimg.com/images/wow/icons/large/inv_boots_05.jpg',
+      'Main Hand': 'https://wow.zamimg.com/images/wow/icons/medium/inv_sword_24.jpg',
+      'Off-hand':'https://static.wikia.nocookie.net/wowpedia/images/5/5a/Inv_offhand_blood_02.png',
+      'Ring': 'https://wow.zamimg.com/images/wow/icons/medium/inv_jewelry_ring_81.jpg',
+        "Red Gem":        "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_x4_rare_cut_red.jpg",
+  "Blue Gem":       "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_x4_rare_cut_blue.jpg",
+  "Yellow Gem":     "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_x4_rare_cut_yellow.jpg",
+  "Green Gem":      "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_x4_rare_cut_green.jpg",
+  "Purple Gem":     "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_x4_rare_cut_purple.jpg",
+  "Orange Gem":     "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_x4_rare_cut_orange.jpg",
+  "Prismatic Gem":  "https://wow.zamimg.com/images/wow/icons/medium/inv_jewelcrafting_cut-standart-gem-hybrid_color1_3.jpg",
+  "Meta Gem":       "https://wow.zamimg.com/images/wow/icons/medium/inv_misc_gem_x4_metagem_cut.jpg",
+    "Flask":          "https://wow.zamimg.com/images/wow/icons/medium/inv_flask_red.jpg",
+  "Potion/Elixir":         "https://wow.zamimg.com/images/wow/icons/large/inv_potion_107.jpg",
+  "Glyph":          "https://wow.zamimg.com/images/wow/icons/medium/inv_glyph_minorhunter.jpg",
+  "Transmutation":  "https://static.wikia.nocookie.net/wowpedia/images/7/7e/Spell_nature_abolishmagic.png"
     };
 
     Papa.parse(sheetCSV, {
@@ -160,12 +86,51 @@
       header: true,
       complete: function(results) {
         const data = results.data;
-        const professions = [...new Set(data.map(row => row.Profession).filter(p => p))].sort();
 
+        // === Filter: Profession
+        const professions = [...new Set(data.map(row => row.Profession).filter(Boolean))].sort();
         professions.forEach(p => {
           $('#professionFilter').append(`<option value="${p}">${p}</option>`);
         });
 
+        // === Filter: Gear Slot with grouping
+        const allGearSlots = [...new Set(data.map(row => row["Gear Slot"]).filter(Boolean))].sort();
+const groupedGearSlots = {
+  "Armor": ['Helm', 'Shoulders', 'Chest', 'Legs', 'Hands', 'Boots', 'Wrists', 'Waist'],
+  "Weapon": ['Main Hand', 'Off-hand'],
+  "Accessories": ['Back', 'Ring'],
+  "Gems": ['Red Gem', 'Blue Gem', 'Yellow Gem', 'Purple Gem', 'Orange Gem', 'Green Gem', 'Prismatic Gem', 'Meta Gem']
+};
+
+const allGroupedSlots = Object.values(groupedGearSlots).flat();
+groupedGearSlots["Other"] = allGearSlots.filter(slot => !allGroupedSlots.includes(slot));
+
+        for (const [group, options] of Object.entries(groupedGearSlots)) {
+          const groupElem = $(`<optgroup label="${group}"></optgroup>`);
+          options.forEach(opt => {
+            groupElem.append(`<option value="${opt}">${opt}</option>`);
+          });
+          $('#gearSlotFilter').append(groupElem);
+        }
+
+        // === Filter: Item/Enchant Name
+        const itemNames = [...new Set(data.map(row => row["Item/Enchant Name"]).filter(Boolean))].sort();
+        itemNames.forEach(i => {
+          $('#itemFilter').append(`<option value="${i}">${i}</option>`);
+        });
+
+const allCrafters = data
+  .map(row => row["Crafter(s)"])
+  .filter(Boolean)
+  .flatMap(c => c.split(',').map(name => name.trim()));
+
+const uniqueCrafters = [...new Set(allCrafters)].sort();
+
+uniqueCrafters.forEach(crafter => {
+  $('#crafterFilter').append(`<option value="${crafter}">${crafter}</option>`);
+});
+
+        // === DataTable Setup
         const table = $('#craftTable').DataTable({
           data: data,
           columns: [
@@ -186,15 +151,46 @@
               }
             },
             { title: 'Item/Enchant Name', data: 'Item/Enchant Name' },
+            
             { title: 'Crafter(s)', data: 'Crafter(s)' }
           ],
+            columnDefs: [
+    {
+      targets: 2, // Item/Enchant Name column index
+      width: '40%' // or '20%', or whatever size works
+    },
+        {
+      targets: 1, // Item/Enchant Name column index
+      width: '20%' // or '20%', or whatever size works
+    },
+        {
+      targets: 0, // Item/Enchant Name column index
+      width: '20%' // or '20%', or whatever size works
+    },
+            {
+      targets: 0, // Item/Enchant Name column index
+      width: '20%' // or '20%', or whatever size works
+    }
+  ],
           pageLength: 25,
-          dom: 't' // hide built-in filter input
+          dom: 'lftip'
         });
 
+        // === Filter Event Bindings
         $('#professionFilter').on('change', function() {
-          const val = this.value;
-          table.column(0).search(val).draw();
+          table.column(0).search(this.value).draw();
+        });
+
+        $('#gearSlotFilter').on('change', function() {
+          table.column(1).search(this.value).draw();
+        });
+
+        $('#itemFilter').on('change', function() {
+          table.column(2).search(this.value).draw();
+        });
+
+        $('#crafterFilter').on('change', function() {
+          table.column(3).search(this.value).draw();
         });
 
         $('#globalSearch').on('keyup', function() {

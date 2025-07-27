@@ -1,0 +1,163 @@
+    body {
+      font-family: 'IM Fell English', serif;
+     padding: 0;
+     padding-bottom: 20px;
+      margin: 0;
+      background-color: #a3bba3;
+      overflow-x: hidden;
+      
+    }
+
+    h1 {
+      text-align: center;
+      color: #f9b233;
+      margin-bottom: 30px;
+      font-size: 32px;
+      text-shadow: 1px 1px 0 #fff8dc;
+    }
+
+    #filter-container {
+      background: rgba(0,0,0,0.2);
+      border: 2px solid #a3bba3;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+@keyframes slow-zoom-bg {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.site-header {
+  width: 100%;
+  height: 400px;
+  background-image: url('ChatGPT\ Image\ Jul\ 27\,\ 2025\,\ 01_33_55\ AM.png');
+  background-size: 105%;
+  background-repeat: no-repeat;
+  background-position-y: 30%; /* vertical crop balance */
+  position: relative;
+  overflow: hidden;
+  animation: slow-zoom-bg 20s ease-in-out forwards;
+}
+
+.site-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+  to bottom,
+  rgba(0, 0, 0, 0) 0%,
+  rgba(163, 187, 163, 0.1) 60%,
+  rgba(163, 187, 163, 0.6) 80%,
+  #a3bba3 100%
+);
+
+  pointer-events: none;
+}
+
+.banner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-family: 'IM Fell English', serif;
+  font-size: 48px;
+  text-shadow: 2px 2px 5px #000;
+}
+
+
+
+
+
+
+    #filter-left, #filter-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    select, input[type="search"] {
+      padding: 6px 10px;
+      font-size: 16px;
+      border: 1px solid #a98250;
+      background: #fff8dc;
+      color: #3e2b1c;
+      border-radius: 6px;
+    }
+
+    #craftTable_wrapper {
+      background: rgba(255, 248, 220, 0.95);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      overflow-x: hidden;
+      margin: 0 20px;
+    }
+
+    table.dataTable th {
+      background-color: #d6b87d;
+      color: #3e2b1c;
+      padding: 12px;
+      text-align: left;
+      border-bottom: 2px solid #a98250;
+    }
+
+    table.dataTable td {
+      padding: 10px;
+      border-bottom: 1px solid #cbb27d;
+    }
+
+    table.dataTable tr:nth-child(even) {
+      background-color: #f7f1df;
+    }
+
+    table.dataTable tr:hover {
+      background-color: #e6dbb6;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+.dataTables_filter{
+    display:none;
+}
+div#craftTable_length {
+    margin-bottom: 20px;
+}
+    .icon {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      margin-right: 20px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      table {
+        font-size: 12px;
+      }
+      #filter-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      #filter-left, #filter-right {
+        justify-content: center;
+      }
+    }
