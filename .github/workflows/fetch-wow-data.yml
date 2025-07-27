@@ -1,12 +1,12 @@
-name: Fetch MoP Remix Crafting Data
+name: Fetch Full MoP Remix Crafting Data
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '0 6 * * *'  # daily at 6am UTC
 
 jobs:
-  fetch-wow-data:
+  fetch-mop-data:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,8 +31,8 @@ jobs:
           CLIENT_ID: ${{ secrets.BLIZZARD_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.BLIZZARD_CLIENT_SECRET }}
 
-      - name: 🧠 Run fetch-wow-data.js
-        run: node scripts/fetch-wow-data.js
+      - name: 🧠 Fetch all item + recipe data
+        run: node scripts/fetch-all-mop-items-with-recipes.js
         env:
           CLIENT_ID: ${{ secrets.BLIZZARD_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.BLIZZARD_CLIENT_SECRET }}
@@ -45,7 +45,6 @@ jobs:
           git config user.email github-actions@github.com
           git add data/
           git diff --cached --quiet && echo "🟡 No changes to commit" || (
-            git commit -m "Update MoP Remix item data" && \
+            git commit -m "Update full MoP Remix item + recipe data" && \
             git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:${{ github.ref }}
           )
-
