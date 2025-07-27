@@ -15,7 +15,9 @@
       font-size: 32px;
       text-shadow: 1px 1px 0 #fff8dc;
     }
-
+table#craftTable {
+    width: auto !important;
+}
     #filter-container {
       background: rgba(0,0,0,0.2);
       border: 2px solid #a3bba3;
