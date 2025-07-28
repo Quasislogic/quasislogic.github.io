@@ -174,7 +174,7 @@ Papa.parse(sheetCSV, {
     const allGearSlots = [...new Set(data.map(row => row["Item Type"]).filter(Boolean))].sort();
     const groupedGearSlots = {
       "Armor": ['Helm', 'Shoulders', 'Chest', 'Legs', 'Hands', 'Boots', 'Wrists', 'Waist'],
-      "Weapon": ['Main Hand', 'Off-hand'],
+      "Weapon": ['Main Hand', 'Off-hand', 'Shield' 'Scopes'],
       "Accessories": ['Back', 'Ring'],
       "Gems": ['Red Gem', 'Blue Gem', 'Yellow Gem', 'Purple Gem', 'Orange Gem', 'Green Gem', 'Prismatic Gem', 'Meta Gem']
     };
