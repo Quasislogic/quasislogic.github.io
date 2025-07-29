@@ -1,4 +1,9 @@
-    body {
+html {
+  overflow-x:hidden;
+}
+
+
+body {
       font-family: 'IM Fell English', serif;
      padding: 0;
      padding-bottom: 20px;
@@ -244,6 +249,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-wrap:wrap;
     }
 
     select, input[type="search"] {
@@ -312,5 +318,8 @@ div#craftTable_length {
       }
       #filter-left, #filter-right {
         justify-content: center;
+      }
+      select#itemFilter {
+        max-width: 15%;
       }
     }
