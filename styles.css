@@ -196,7 +196,14 @@ body {
   }
 }
 
-.site-header {
+.site-header{
+
+  position: relative;
+  overflow: hidden;
+  
+
+}
+.kenburns-bg {
   width: 100%;
   height: 400px;
   background-image: url('ChatGPT\ Image\ Jul\ 27\,\ 2025\,\ 01_33_55\ AM.png');
