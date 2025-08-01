@@ -112,7 +112,7 @@ Papa.parse(sheetCSV, {
             const name = row["Item/Enchant Name"];
             const id = row["Item ID"];
             if (!id) return name;
-            return `<a href="https://www.wowhead.com/mop-classic/item=${id}" data-wowhead="item=${id}" class="wowhead-link">${name}</a>`;
+            return `<a href="https://www.wowhead.com/mop-classic/spell=${id}" data-wowhead="spell=${id}" class="wowhead-link">${name}</a>`;
           }
         },
         {
@@ -174,7 +174,7 @@ Papa.parse(sheetCSV, {
     const allGearSlots = [...new Set(data.map(row => row["Item Type"]).filter(Boolean))].sort();
     const groupedGearSlots = {
       "Armor": ['Helm', 'Shoulders', 'Chest', 'Legs', 'Hands', 'Boots', 'Wrists', 'Waist'],
-      "Weapon": ['Main Hand', 'Off-hand', 'Shield', 'Scopes'],
+      "Weapon": ['Main Hand', 'Off-hand'],
       "Accessories": ['Back', 'Ring'],
       "Gems": ['Red Gem', 'Blue Gem', 'Yellow Gem', 'Purple Gem', 'Orange Gem', 'Green Gem', 'Prismatic Gem', 'Meta Gem']
     };
