@@ -2,8 +2,7 @@ name: Fetch Full MoP Remix Crafting Data
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 6 * * *'  # daily at 6am UTC
+
 
 jobs:
   fetch-mop-data:
