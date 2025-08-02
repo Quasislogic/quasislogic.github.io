@@ -1,131 +1,100 @@
 html {
-  overflow-x:hidden;
+  overflow-x: hidden;
 }
-
 
 body {
-      font-family: 'IM Fell English', serif;
-     padding: 0;
-     padding-bottom: 20px;
-      margin: 0;
-      background-color: #a3bba3;
-      overflow-x: hidden;
-      user-select:none;
-    }
-
-    h1 {
-      text-align: center;
-      color: #f9b233;
-      margin-bottom: 30px;
-      font-size: 32px;
-      text-shadow: 1px 1px 0 #fff8dc;
-    }
-    
-    table#craftTable {
-    width: auto !important;
+  font-family: 'IM Fell English', serif;
+  padding: 0;
+  padding-bottom: 20px;
+  margin: 0;
+  background-color: #a3bba3;
+  overflow-x: hidden;
+  user-select: none;
 }
-    .wowhead-link {
-          text-decoration: none;
-          color:black;
-        }
-        .icon {
-          width: 20px;
-          height: 20px;
-          vertical-align: middle;
-          margin-right: 6px;
-        }
-        .favourite-star {
-          cursor: pointer;
-          font-size: 18px;
-          color: #ccc;
-        }
-        .favourite-star.favourited {
-          color: gold;
-        }
-        #favouriteToggle {
-          margin: 0 10px;
-          display: inline-block;
-          font-weight: bold;
-          cursor: pointer;
-        }
-        #clearFavourites {
-          margin-left: 12px;
-          padding: 8px;
-          cursor: pointer;
-        }
-        #toast {
-          position: fixed;
-          bottom: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          background-color: #333;
-          color: #fff;
-          padding: 12px 20px;
-          border-radius: 8px;
-          opacity: 0;
-          pointer-events: none;
-          transition: opacity 0.4s ease;
-          z-index: 1000;
-          font-family: sans-serif;
-        }
-        #toast.show {
-          opacity: 1;
-          pointer-events: auto;
-        }
-        .favourite-toggle {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      padding: 3px 12px;
-      background: #fff8dc;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      transition: background 0.3s;
-    }
 
-    .favourite-toggle:hover {
-      background: #f1eddb;
-    }
+h1 {
+  text-align: center;
+  color: #f9b233;
+  margin-bottom: 30px;
+  font-size: 32px;
+  text-shadow: 1px 1px 0 #fff8dc;
+}
 
-    .toggle-star {
-      font-size: 18px;
-      margin-right: 6px;
-      color: #ccc;
-      transition: color 0.3s;
-    }
+table#craftTable {
+  width: auto !important;
+}
 
-    #favouriteToggle:checked + .toggle-star {
-      color: gold;
-    }
+.wowhead-link {
+  text-decoration: none;
+  color: black;
+}
 
-    .toggle-label {
-      font-size: 14px;
-      font-weight: bold;
-      color: #333;
-    }
+.icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
 
-    .clear-favs {
-      padding: 6px 10px;
-      background: #fff8dc;
-      border: 1px solid #bbb;
-      border-radius: 7px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
+.favourite-star {
+  cursor: pointer;
+  font-size: 18px;
+  color: #ccc;
+}
 
-    .clear-favs:hover {
-      background: #ddd;
-    }
-    .favourite-cell {
+.favourite-star.favourited {
+  color: gold;
+}
+
+#favouriteToggle {
+  margin: 0 10px;
+  display: inline-block;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#clearFavourites {
+  margin-left: 12px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+#toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 1000;
+  font-family: sans-serif;
+}
+
+#toast.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#favouriteToggle:checked + .toggle-star {
+  color: gold;
+}
+
+
+.favourite-cell {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  text-align:center !important;
+  text-align: center !important;
 }
+
 .discord-badge {
   display: inline-flex;
   align-items: center;
@@ -146,46 +115,27 @@ body {
 .discord-icon {
   width: 24px;
   height: 24px;
-  z-index:9999;
- 
+  z-index: 9999;
 }
 
 .discord-text {
   margin-left: 10px;
   opacity: 0;
   transition: opacity 0.6s ease;
-  z-index:9999;
+  z-index: 9999;
 }
 
 .discord-badge:hover {
   max-width: 240px;
   padding-right: 16px;
   background-color: #4752c4;
-  z-index:9999;
+  z-index: 9999;
 }
 
 .discord-badge:hover .discord-text {
   opacity: 1;
-  z-index:9999;
+  z-index: 9999;
 }
-
-
-
-    #filter-container {
-      background: rgba(0,0,0,0.2);
-      border: 2px solid #a3bba3;
-      padding: 15px;
-      border-radius: 8px;
-      margin: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
 
 @keyframes slow-zoom-bg {
   from {
@@ -196,20 +146,18 @@ body {
   }
 }
 
-.site-header{
-
+.site-header {
   position: relative;
   overflow: hidden;
-  
-
 }
+
 .kenburns-bg {
   width: 100%;
   height: 400px;
-  background-image: url('ChatGPT\ Image\ Jul\ 27\,\ 2025\,\ 01_33_55\ AM.png');
+  background-image: url('ChatGPT\ Image\ Jul\ 27,\ 2025,\ 01_33_55\ AM.png');
   background-size: 105%;
   background-repeat: no-repeat;
-  background-position-y: 30%; /* vertical crop balance */
+  background-position-y: 30%;
   position: relative;
   overflow: hidden;
   animation: slow-zoom-bg 20s ease-in-out forwards;
@@ -225,14 +173,12 @@ body {
   height: 100%;
   z-index: -1;
   background: linear-gradient(
-  to bottom,
-  rgba(0, 0, 0, 0) 0%,
-  rgba(163, 187, 163, 0.1) 60%,
-  rgba(163, 187, 163, 0.6) 80%,
-  #a3bba3 100%
-  
-);
-
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(163, 187, 163, 0.1) 60%,
+    rgba(163, 187, 163, 0.6) 80%,
+    #a3bba3 100%
+  );
   pointer-events: none;
 }
 
@@ -245,89 +191,272 @@ body {
   font-family: 'IM Fell English', serif;
   font-size: 48px;
   text-shadow: 2px 2px 5px #000;
-  height:60%
+  height: 60%;
 }
 
-
-
-
-
-
-    #filter-left, #filter-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap:wrap;
-    }
-
-    select, input[type="search"] {
-      padding: 6px 10px;
-      font-size: 16px;
-      border: 1px solid #a98250;
-      background: #fff8dc;
-      color: #3e2b1c;
-      border-radius: 6px;
-    }
-
-    #craftTable_wrapper {
-      background: rgba(255, 248, 220, 0.95);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      overflow-x: hidden;
-      margin: 0 20px;
-    }
-
-    table.dataTable th {
-      background-color: #d6b87d;
-      color: #3e2b1c;
-      padding: 12px;
-      text-align: left;
-      border-bottom: 2px solid #a98250;
-    }
-
-    table.dataTable td {
-      padding: 10px;
-      border-bottom: 1px solid #cbb27d;
-    }
-
-    table.dataTable tr:nth-child(even) {
-      background-color: #f7f1df;
-    }
-
-    table.dataTable tr:hover {
-      background-color: #e6dbb6;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-.dataTables_filter{
-    display:none;
+#craftTable_wrapper {
+  background: rgba(255, 248, 220, 0.95);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  overflow-x: hidden;
+  margin: 0 20px;
 }
+
+table.dataTable th {
+  background-color: #d6b87d;
+  color: #3e2b1c;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #a98250;
+}
+
+table.dataTable td {
+  padding: 10px;
+  border-bottom: 1px solid #cbb27d;
+}
+
+table.dataTable tr:nth-child(even) {
+  background-color: #f7f1df;
+}
+
+table.dataTable tr:hover {
+  background-color: #e6dbb6;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.dataTables_filter {
+  display: none;
+}
+
 div#craftTable_length {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
-    .icon {
-      width: 20px;
-      height: 20px;
-      vertical-align: middle;
-      margin-right: 20px;
-    }
 
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-      table {
-        font-size: 12px;
-      }
-      #filter-container {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      #filter-left, #filter-right {
-        justify-content: center;
-      }
-      select#itemFilter {
-        max-width: 15%;
-      }
-    }
+.icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 20px;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  table {
+    font-size: 12px;
+  }
+}
+#filter-container {
+  background: rgba(0, 0, 0, 0.25);
+  border: 2px solid #a3bba3;
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px auto;
+  max-width: 1200px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 1290px) {
+#filter-container{
+  margin: 20px;
+}
+}
+  
+
+#filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  align-items: end;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  font-family: 'IM Fell English', serif;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #3e2b1c;
+}
+
+select, input[type="search"] {
+  padding: 8px 10px;
+  font-size: 16px;
+  border: 1px solid #a98250;
+  background: #fff8dc;
+  color: #3e2b1c;
+  border-radius: 6px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+select:focus, input[type="search"]:focus {
+  outline: none;
+  border-color: #f9b233;
+  box-shadow: 0 0 6px #f9b23399;
+}
+
+/* Make search span full width */
+.full-width {
+  grid-column: 1 / 4;
+}
+
+/* Actions block (⭐ + 🗑️) */
+#filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.invisible-label {
+  visibility: hidden;
+  height: 1.4em;
+}
+
+.actions-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.favourite-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  color: #3e2b1c;
+  cursor: pointer;
+}
+
+.favourite-toggle input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  display: inline-block;
+  background: #ccc;
+  height: 1.65rem;
+  width: 2.75rem;
+  vertical-align: middle;
+  border-radius: 2rem;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+  transition: background 0.25s linear;
+  cursor: pointer;
+}
+
+.favourite-toggle input[type="checkbox"]::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  transition: transform 0.25s ease;
+}
+
+.favourite-toggle input[type="checkbox"]:checked {
+  background: gold;
+}
+
+.favourite-toggle input[type="checkbox"]:checked::before {
+  transform: translateX(1.1rem);
+}
+
+
+.toggle-star {
+  font-size: 20px;
+  color: #ccc;
+  transition: color 0.3s;
+}
+
+#favouriteToggle:checked + .toggle-star {
+  color: gold;
+}
+
+.clear-favs {
+  padding: 6px 10px;
+  background: #fff8dc;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.favourite-wrapper {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  gap: 10px;
+  background: #fff8dc;
+  border: 1px solid #a98250;
+  vertical-align: middle;
+  border-radius: 6px;
+  height:37px;
+  width: 135px;
+}
+
+/* Toggle switch styles (unchanged) */
+.favourite-toggle input[type="checkbox"] {
+  appearance: none;
+  position: relative;
+  display: inline-block;
+  background: #f4efd4;
+  height: 1.45rem;
+  width: 2.75rem;
+  vertical-align: middle;
+  border-radius: 2rem;
+  border: none;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.25);
+  transition: background 0.25s linear;
+  cursor: pointer;
+  margin-top:5px!important;
+  }
+
+.favourite-toggle input[type="checkbox"]::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  transition: transform 0.25s ease;
+  
+}
+
+.favourite-toggle input[type="checkbox"]:checked {
+  background: #d6b87d;
+  
+}
+
+.favourite-toggle input[type="checkbox"]:checked::before {
+  transform: translateX(1.1rem);
+}
+
+/* Trash button (inside wrapper) */
+.clear-favs {
+    background: none;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 0;
+    color: #3e2b1c;
+    transition: color 0.2s ease;
+    margin-bottom: 4px;
+}
+
+.clear-favs:hover {
+  font-size: 18px;
+}
+

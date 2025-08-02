@@ -303,7 +303,7 @@ const data = Object.values(grouped).map(row => ({
       table.column(4).search(this.value).draw();
       updateParam('crafter', this.value);
     });
-    $('#globalSearch').on('keyup', function() {
+    $('#globalSearch').on('input', function() {
       table.search(this.value).draw();
     });
   }
