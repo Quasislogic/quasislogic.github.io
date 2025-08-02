@@ -154,7 +154,7 @@ table#craftTable {
 .kenburns-bg {
   width: 100%;
   height: 400px;
-  background-image: url('ChatGPT\ Image\ Jul\ 27,\ 2025,\ 01_33_55\ AM.png');
+  background-image: url('header.png');
   background-size: 105%;
   background-repeat: no-repeat;
   background-position-y: 30%;
@@ -459,4 +459,5 @@ select:focus, input[type="search"]:focus {
 .clear-favs:hover {
   font-size: 18px;
 }
+
 
