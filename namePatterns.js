@@ -1,0 +1,30 @@
+export const namePrefixPatterns = [
+  { prefix: "Glyph of", itemType: "Glyph" },
+  { prefix: "Enchant Shoulder", itemType: "Shoulders" },
+  { prefix: "Enchant Chest", itemType: "Chest" },
+  { prefix: "Enchant Cloak", itemType: "Back" },
+  { prefix: "Enchant Gloves", itemType: "Hands" },
+  { prefix: "Enchant Bracer", itemType: "Wrists" },
+  { prefix: "Enchant Boots", itemType: "Boots" },
+  { prefix: "Enchant Weapon", itemType: "Main Hand" },
+  { prefix: "Enchant 2H Weapon", itemType: "Main Hand" },
+  { prefix: "Enchant Off-Hand", itemType: "Off-hand" },
+  { prefix: "Enchant Shield", itemType: "Off-hand" },
+  { prefix: "Enchant Staff", itemType: "Main Hand" },
+  { prefix: "Transmute:", itemType: "Transmutation" },
+  { prefix: "Flask of", itemType: "Flask" },
+  { prefix: "Potion of", itemType: "Potion/Elixir" },
+  { prefix: "Elixir of", itemType: "Potion/Elixir" },
+  { prefix: "Scroll of", itemType: "Scroll" },
+];
+
+export const nameContainsPatterns = [
+  { keyword: "Ink", itemType: "Ink" },
+  { keyword: "Pigment", itemType: "Pigment" },
+  { keyword: "Thread", itemType: "Thread" },
+  { keyword: "Rune", itemType: "Rune" },
+  { keyword: "Inscription", itemType: "Shoulders" },
+  { keyword: "Runescroll", itemType: "Scroll" },
+  { keyword: "Embroidery", itemType: "Back" },
+  { keyword: "Spellthread", itemType: "Legs" },
+];
