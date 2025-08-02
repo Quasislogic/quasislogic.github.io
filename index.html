@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta property="og:title" content="Psy's Crafting Table">
+<meta property="og:description" content="Psy's Crafting Table.">
+<meta property="og:image" content=https://psycraft.net/download_2.jfif>
+<meta property="og:url" content="https://psycraft.net">
+<meta property="og:type" content="website">
+
+<!-- Optional: Twitter card support -->
+<meta name="twitter:card" content="summary_large_image">
+  <title>WoW Crafting Table</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://wow.zamimg.com/widgets/power.js"></script>
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="kenburns-bg"></div>
+  <img class="banner-text" src="ChatGPT_Image_Jul_30__2025__11_11_36_PM-removebg-preview.png" alt="Banner Text">
+</header>
+<a href="https://discord.gg/VtJEGs92Fr" target="_blank" class="discord-badge">
+  <img src="https://img.icons8.com/color/48/discord-logo.png" alt="Discord Icon" class="discord-icon">
+  <span class="discord-text">Join us on Discord</span>
+</a>
+
+<div class="body">
+  <div id="filter-container">
+   <div id="filter-left">
+  <label for="professionFilter">Profession:</label>
+  <select id="professionFilter"><option value="">All</option></select>
+
+  <label for="gearSlotFilter">Gear Slot:</label>
+  <select id="gearSlotFilter"><option value="">All</option></select>
+
+  <label for="itemFilter">Item/Enchant:</label>
+  <select id="itemFilter"><option value="">All</option></select>
+
+  <label for="crafterFilter">Crafter(s):</label>
+  <select id="crafterFilter"><option value="">All</option></select>
+
+    <label class="favourite-toggle">
+      <input type="checkbox" id="favouriteToggle" hidden>
+      <span class="toggle-star">⭐</span>
+      <span class="toggle-label">Favourites Only</span>
+    </label>
+    <button id="clearFavourites" class="clear-favs">🗑️</button>
+  </div>
+
+
+
+    <div id="filter-right">
+      <label for="globalSearch">Search:</label>
+      <input type="search" id="globalSearch" placeholder="Search items...">
+    </div>
+  </div>
+
+
+
+
+</div>
+
+  <table id="craftTable" class="display"></table>
+
+  <!-- Toast element -->
+  <div id="toast">Favourites cleared</div>
+
+</body>
+</html>
+
+
