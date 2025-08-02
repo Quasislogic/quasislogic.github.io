@@ -25,7 +25,42 @@ const invTypeMap = {
   INVTYPE_THROWN: 'Ranged', // Optional
   INVTYPE_NON_EQUIP_IGNORE: 'Misc',
   INVTYPE_BAG: 'Bag',
+  INVTYPE_BODY: 'Shirt',
+
 };
+const namePrefixPatterns = [
+  { prefix: "Glyph of", itemType: "Glyph" },
+  { prefix: "Enchant Shoulder", itemType: "Shoulders" },
+  { prefix: "Enchant Chest", itemType: "Chest" },
+  { prefix: "Enchant Cloak", itemType: "Back" },
+  { prefix: "Enchant Gloves", itemType: "Hands" },
+  { prefix: "Enchant Bracer", itemType: "Wrists" },
+  { prefix: "Enchant Boots", itemType: "Boots" },
+  { prefix: "Enchant Weapon", itemType: "Main Hand" },
+  { prefix: "Enchant 2H Weapon", itemType: "Main Hand" },
+  { prefix: "Enchant Off-Hand", itemType: "Off-hand" },
+  { prefix: "Enchant Shield", itemType: "Off-hand" },
+  { prefix: "Enchant Staff", itemType: "Main Hand" },
+  { prefix: "Transmute:", itemType: "Transmutation" },
+  { prefix: "Flask of", itemType: "Flask" },
+  { prefix: "Potion of", itemType: "Potion/Elixir" },
+  { prefix: "Elixir of", itemType: "Potion/Elixir" },
+  { prefix: "Scroll of", itemType: "Scroll" },
+];
+
+const nameContainsPatterns = [
+  { keyword: "Ink", itemType: "Ink" },
+  { keyword: "Pigment", itemType: "Pigment" },
+  { keyword: "Thread", itemType: "Thread" },
+  { keyword: "Rune", itemType: "Rune" },
+  { keyword: "Inscription", itemType: "Inscription" },
+  { keyword: "Runescroll", itemType: "Scroll" },
+  { keyword: "Embroidery", itemType: "Back" },
+  { keyword: "Spellthread", itemType: "Legs" },
+  // Add more as needed
+];
+
+
 
 const professionIcons = {
   'Blacksmithing': 'https://wow.zamimg.com/images/wow/icons/large/trade_blacksmithing.jpg',
@@ -62,7 +97,13 @@ const gearIcons = {
   'Flask': 'https://wow.zamimg.com/images/wow/icons/medium/inv_flask_red.jpg',
   'Potion/Elixir': 'https://wow.zamimg.com/images/wow/icons/large/inv_potion_107.jpg',
   'Glyph': 'https://wow.zamimg.com/images/wow/icons/medium/inv_glyph_minorhunter.jpg',
-  'Transmutation': 'https://static.wikia.nocookie.net/wowpedia/images/7/7e/Spell_nature_abolishmagic.png'
+  'Transmutation': 'https://static.wikia.nocookie.net/wowpedia/images/7/7e/Spell_nature_abolishmagic.png',
+  'Scroll': 'https://wow.zamimg.com/images/wow/icons/medium/inv_scroll_07.jpg',
+  'Shirt':'https://wow.zamimg.com/images/wow/icons/medium/inv_shirt_white_01.jpg',
+  'Ink' :'https://wow.zamimg.com/images/wow/icons/medium/inv_inscription_inkblack02.jpg',
+  'Misc' :'https://wow.zamimg.com/images/wow/icons/medium/inv_misc_bag_10_black.jpg',
+  'Inscription': 'https://wow.zamimg.com/images/wow/icons/large/inv_inscription_tradeskill01.jpg',
+  'Bag': 'https://wow.zamimg.com/images/wow/icons/medium/inv_misc_bag_23_netherweave.jpg',
 };
 
 let favouriteRows = JSON.parse(localStorage.getItem('favouriteRows') || '[]');
@@ -106,10 +147,54 @@ Papa.parse(sheetCSV, {
 
 // Group by: Profession + Item/Enchant Name + Item ID + Spell ID
 const grouped = {};
-    raw.forEach(row => {
-  const invType = row["Item Type"];
-  row["Item Type"] = invTypeMap[invType] || invType; // fallback to original if unmapped
+raw.forEach(row => {
+  const originalType = row["Item Type"];
+  const name = row["Item/Enchant Name"];
+
+let finalType;
+
+// 1. Check name-based prefix
+for (const pattern of namePrefixPatterns) {
+  if (name?.startsWith(pattern.prefix)) {
+    finalType = pattern.itemType;
+    break;
+  }
+}
+
+// 2. If still not set, check "contains" patterns (e.g., Ink, Rune, etc)
+if (!finalType) {
+  for (const pattern of nameContainsPatterns) {
+    const regex = new RegExp(`\\b${pattern.keyword}\\b`, 'i'); // match whole word
+    if (regex.test(name)) {
+      finalType = pattern.itemType;
+      break;
+    }
+  }
+}
+
+// 3. If still not set, fall back to invTypeMap or leave as-is
+if (!finalType) {
+  finalType = invTypeMap[originalType] || originalType;
+}
+
+row["Item Type"] = finalType;
+
+
+// If still generic, try contains (whole word-like)
+if (!finalType || finalType === originalType) {
+  for (const pattern of nameContainsPatterns) {
+    const regex = new RegExp(`\\b${pattern.keyword}\\b`, 'i'); // whole word, case-insensitive
+    if (regex.test(name)) {
+      finalType = pattern.itemType;
+      break;
+    }
+  }
+}
+
+
+  row["Item Type"] = finalType;
 });
+
 
 raw.forEach(row => {
   const key = `${row["Profession"]}|${row["Item/Enchant Name"]}|${row["Item ID"]}|${row["Spell ID"]}`;
@@ -303,9 +388,14 @@ const data = Object.values(grouped).map(row => ({
       table.column(4).search(this.value).draw();
       updateParam('crafter', this.value);
     });
-    $('#globalSearch').on('input', function() {
-      table.search(this.value).draw();
-    });
+let debounce;
+$('#globalSearch').on('input', function() {
+  clearTimeout(debounce);
+  const value = this.value;
+  debounce = setTimeout(() => {
+    table.search(value).draw();
+  }, 150);
+});
   }
 });
 
