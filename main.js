@@ -144,26 +144,37 @@ const data = Object.values(grouped).map(row => ({
             return icon ? `<img class="icon" src="${icon}" alt="">${data}` : data;
           }
         },
+
 {
   title: 'Item/Enchant Name',
   data: null,
   render: function(row) {
     const name = row["Item/Enchant Name"];
     const id = row["Spell ID"];
-    const icon = Number(row["Texture ID"]); // 🔥 FIX: ensure it's a number
+    const icon = Number(row["Texture ID"]);
 
     const iconName = iconMap[icon];
     const iconImg = iconName
       ? `<img src="https://wow.zamimg.com/images/wow/icons/medium/${iconName}.jpg" class="icon" alt="" style="margin-right:4px; vertical-align:middle;">`
       : '';
 
+    // 🧼 Escape HTML in the name
+    function escapeHTML(str) {
+      const div = document.createElement("div");
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    const escapedName = escapeHTML(name);
+
     const displayName = id
-      ? `<a href="https://www.wowhead.com/mop-classic/spell=${id}" data-wowhead="spell=${id}" class="wowhead-link">${name}</a>`
-      : name;
+      ? `<a href="https://www.wowhead.com/mop-classic/spell=${id}" data-wowhead="spell=${id}" class="wowhead-link">${escapedName}</a>`
+      : escapedName;
 
     return iconImg + displayName;
   }
 },
+
 
 {
   title: 'Crafter(s)',
