@@ -1451,4 +1451,10 @@ export const iconMap = {
   667398: "inv_gnomish_xray_specs",
   794852: "inv_misc_1h_pa_pan_a_01",
   794853: "inv_misc_1h_pa_spoon_a_01",
+  133152: "inv_helmet_50",
+  237454: "inv_shield_63",
+  603364: "ability_mount_onyxpanther",
+  615167: "inv_bracer_plate_dungeonplate_c_07",
+  617130: "ability_mount_onyxpanther_blue",
+  617131: "ability_mount_onyxpanther_red",
 };
