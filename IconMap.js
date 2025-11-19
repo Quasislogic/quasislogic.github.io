@@ -1457,4 +1457,5 @@ export const iconMap = {
   615167: "inv_bracer_plate_dungeonplate_c_07",
   617130: "ability_mount_onyxpanther_blue",
   617131: "ability_mount_onyxpanther_red",
+  0: "icon=0",
 };
